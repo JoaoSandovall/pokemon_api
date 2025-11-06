@@ -1,18 +1,24 @@
 import requests
+import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_caching import Cache
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
 
 # --- Configurações ---
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost:5432/pokedex_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['JWT_SECRET_KEY'] =  os.environ.get('JWT_SECRET_KEY')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config["JWT_SECRET_KEY"] = "sua-chave-secreta-muito-forte-aqui"
+app.config['CACHE_TYPE'] = "SimpleCache"
+cache = Cache(app)
 
 # --- Inicializações ---
 db = SQLAlchemy(app)
@@ -126,6 +132,7 @@ def get_my_teams():
     return jsonify(teams_data), 200
 
 # --- Rota de Pokémon ---
+@cache.cached(timeout=600)
 def get_pokemon_info(name):
     url = f"{base_url}/pokemon/{name.lower()}"
     response = requests.get(url)

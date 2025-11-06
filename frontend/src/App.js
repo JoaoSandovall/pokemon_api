@@ -4,7 +4,7 @@ import Login from './Login';
 import Register from './Register';
 import MyTeams from './MyTeams'; 
 import Pokedex from './Pokedex'; 
-import TeamBuilder from './TeamBuilder'; // <-- 1. IMPORTE O NOVO COMPONENTE
+import TeamBuilder from './TeamBuilder';
 
 function App() {
     const token = localStorage.getItem('pokemonToken');
@@ -27,25 +27,19 @@ function App() {
         );
     }
 
-    // Se TIVER token, mostre o app principal
     return (
         <div className="App">
             <h1>Pokémon Team Builder</h1>
             <button onClick={handleLogout}>Sair (Logout)</button>
             <hr />
 
-            {/* 2. ADICIONE O COMPONENTE AQUI */}
             <TeamBuilder token={token} />
             <hr />
-
-            {/* Componente para ver os times salvos */}
             <MyTeams token={token} />
             <hr />
-
-            {/* Seu componente original para buscar Pokémon */}
             <h2>Buscar Pokémon</h2>
             <Pokedex />
-            
+            ""
         </div>
     );
 }

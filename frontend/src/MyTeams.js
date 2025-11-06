@@ -1,22 +1,16 @@
-// frontend/src/MyTeams.js
 import React, { useState, useEffect } from 'react';
 
-// Este componente recebe o 'token' do App.js
 function MyTeams({ token }) {
-    const [teams, setTeams] = useState([]); // Lista de times
+    const [teams, setTeams] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // useEffect roda UMA VEZ quando o componente é carregado
     useEffect(() => {
         const fetchTeams = async () => {
             try {
-                // Chama a rota protegida GET /api/teams
                 const response = await fetch('http://127.0.0.1:5000/api/teams', {
                     method: 'GET',
                     headers: {
-                        // Enviamos o token no header "Authorization"
-                        // Exatamente como fizemos no Thunder Client!
                         'Authorization': `Bearer ${token}`
                     }
                 });
@@ -26,10 +20,9 @@ function MyTeams({ token }) {
                 }
 
                 const data = await response.json();
-                setTeams(data); // Salva os times no estado
+                setTeams(data);
 
             } catch (err) {
-                // Se o token expirar, o usuário verá este erro
                 setError(err.message);
             } finally {
                 setLoading(false);
@@ -37,7 +30,7 @@ function MyTeams({ token }) {
         };
 
         fetchTeams();
-    }, [token]); // O [token] significa que este efeito re-rodará se o token mudar
+    }, [token]); 
 
     if (loading) return <p>Carregando seus times...</p>;
     if (error) return <p style={{ color: 'red' }}>{error}</p>;
@@ -49,7 +42,6 @@ function MyTeams({ token }) {
                 <p>Você ainda não salvou nenhum time.</p>
             ) : (
                 <ul>
-                    {/* Faz um loop na lista de times e exibe cada um */}
                     {teams.map(team => (
                         <li key={team.id}>
                             <strong>{team.team_name}</strong>

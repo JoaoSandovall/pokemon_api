@@ -1,4 +1,3 @@
-// frontend/src/Login.js
 import React, { useState } from 'react';
 
 function Login() {
@@ -11,7 +10,6 @@ function Login() {
         setError(null);
 
         try {
-            // Chama sua API Flask (ela DEVE estar rodando!)
             const response = await fetch('http://127.0.0.1:5000/login', {
                 method: 'POST',
                 headers: {
@@ -29,11 +27,8 @@ function Login() {
                 throw new Error(data.error || 'Falha no login');
             }
 
-            // SUCESSO! Salve o token no localStorage
             localStorage.setItem('pokemonToken', data.access_token);
 
-            // Recarrega a página. O App.js vai rodar de novo
-            // e ver que o token existe.
             window.location.reload();
 
         } catch (err) {

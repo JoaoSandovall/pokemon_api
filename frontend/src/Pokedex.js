@@ -13,8 +13,6 @@ function Pokedex() {
     setPokemonData(null);
 
     try {
-      // CHAMA A SUA API FLASK! (Não a pokeapi.co)
-      // A sua API Flask é a "intermediária"
       const response = await fetch(`http://127.0.0.1:5000/api/pokemon/${pokemonName.toLowerCase()}`);
       
       const data = await response.json();
@@ -23,7 +21,7 @@ function Pokedex() {
         throw new Error(data.error || 'Algo deu errado');
       }
 
-      setPokemonData(data); // Salva os dados do Pokémon
+      setPokemonData(data);
 
     } catch (err) {
       setError(err.message);
@@ -44,7 +42,6 @@ function Pokedex() {
         {loading ? 'Buscando...' : 'Buscar'}
       </button>
 
-      {/* --- Resultados --- */}
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {pokemonData && (

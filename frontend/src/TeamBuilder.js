@@ -1,19 +1,13 @@
-// frontend/src/TeamBuilder.js
 import React, { useState } from 'react';
 
-// Este componente recebe o token como "prop"
 function TeamBuilder({ token }) {
-    // Estado para o nome do time
     const [teamName, setTeamName] = useState('');
     
-    // Estado para os 6 Pokémon
-    // (Vamos usar um array de 6 strings vazias)
     const [pokemonInputs, setPokemonInputs] = useState(['', '', '', '', '', '']);
 
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(null);
 
-    // Função para atualizar um Pokémon específico no array
     const handlePokemonChange = (index, value) => {
         const newInputs = [...pokemonInputs];
         newInputs[index] = value;
@@ -25,7 +19,6 @@ function TeamBuilder({ token }) {
         setError(null);
         setSuccess(null);
 
-        // 1. Filtra apenas os campos que foram preenchidos
         const pokemon_names = pokemonInputs.filter(name => name.trim() !== '');
 
         if (!teamName) {
@@ -37,20 +30,17 @@ function TeamBuilder({ token }) {
             setError('Você precisa adicionar pelo menos um Pokémon.');
             return;
         }
-
-        // 2. Prepara o JSON para enviar à API
         const payload = {
             team_name: teamName,
-            pokemon_names: pokemon_names // Envia a lista de nomes
+            pokemon_names: pokemon_names 
         };
 
         try {
-            // 3. Faz a chamada POST para /api/teams (igual ao Thunder Client)
             const response = await fetch('http://127.0.0.1:5000/api/teams', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}` // Usa o token!
+                    'Authorization': `Bearer ${token}` 
                 },
                 body: JSON.stringify(payload)
             });
@@ -60,19 +50,13 @@ function TeamBuilder({ token }) {
             if (!response.ok) {
                 throw new Error(data.error || 'Falha ao salvar o time');
             }
-
-            // 4. Sucesso!
-            setSuccess(data.message); // "Time salvo com sucesso!"
             
-            // Limpa o formulário
+            setSuccess(data.message);
             setTeamName('');
             setPokemonInputs(['', '', '', '', '', '']);
-
-            // Recarrega a página para o componente MyTeams atualizar
-            // (Esta é a forma mais simples de atualizar a lista)
             setTimeout(() => {
                 window.location.reload();
-            }, 1500); // Espera 1.5s antes de recarregar
+            }, 1500);
 
         } catch (err) {
             setError(err.message);
@@ -95,7 +79,6 @@ function TeamBuilder({ token }) {
                 <br />
                 <div>
                     <label>Pokémon:</label>
-                    {/* Cria 6 campos de input */}
                     {pokemonInputs.map((pokemon, index) => (
                         <input
                             key={index}
