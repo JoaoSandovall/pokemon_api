@@ -109,7 +109,7 @@ def create_team():
 
         pokemon_data, status_code = get_pokemon_info(name)
 
-        if status_code == 400:
+        if status_code == 404:
             return jsonify({"error": f"Pokémon '{name}' não foi encontrado!"}), 400
         
         valid_pokemon_names.append(pokemon_data['name'])
