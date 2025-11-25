@@ -1,0 +1,123 @@
+.App {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Títulos */
+.App h1 {
+  text-align: center;
+  color: #2c3e50;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+}
+
+.App h2, .App h3 {
+  color: #34495e;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+/* Transforma os componentes (Login, Register, TeamBuilder) em cartões */
+.App > div {
+  background: #ffffff;
+  border-radius: 12px; /* Bordas arredondadas */
+  padding: 30px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05); /* Sombra suave flutuante */
+  margin-bottom: 25px;
+  transition: transform 0.2s ease;
+}
+
+.App > div:hover {
+  transform: translateY(-2px); /* Leve movimento ao passar o mouse */
+}
+
+/* --- Inputs (Campos de Texto) --- */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 15px;
+  margin: 8px 0 20px 0;
+  display: inline-block;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: inherit;
+  transition: border-color 0.3s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #6c5ce7; /* Roxo moderno */
+}
+
+/* --- Botões --- */
+button {
+  width: 100%;
+  background-color: #6c5ce7; /* Roxo moderno */
+  color: white;
+  padding: 14px 20px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+button:hover {
+  background-color: #5b4bc4;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* Botão de Deletar (Pequeno e Vermelho) */
+button[style*="red"],
+button[style*="#ff4d4d"] {
+  background-color: #ff7675 !important;
+  width: auto;
+  padding: 8px 16px;
+  margin: 0;
+}
+
+button[style*="red"]:hover {
+  background-color: #d63031 !important;
+}
+
+/* Botão de Logout (Cinza) */
+.App > button {
+  background-color: #dfe6e9;
+  color: #636e72;
+  margin-bottom: 30px;
+}
+
+.App > button:hover {
+  background-color: #b2bec3;
+  color: white;
+}
+
+/* --- Listas (Meus Times) --- */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  background-color: #fdfdfd;
+  border: 1px solid #f0f0f0;
+  margin-bottom: 12px;
+  padding: 15px;
+  border-radius: 8px;
+}
+
+/* Esconde linhas horizontais antigas */
+hr {
+  display: none;
+}

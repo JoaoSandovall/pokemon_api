@@ -5,6 +5,7 @@ import Register from './Register';
 import MyTeams from './MyTeams'; 
 import Pokedex from './Pokedex'; 
 import TeamBuilder from './TeamBuilder';
+import './App.css';
 
 function App() {
     const token = localStorage.getItem('pokemonToken');

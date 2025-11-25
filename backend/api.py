@@ -1,23 +1,23 @@
-import requests
 import os
 from dotenv import load_dotenv
+load_dotenv()
+import requests
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
-from flask_caching import Cache
-load_dotenv()
 
 app = Flask(__name__)
+from flask_caching import Cache
 CORS(app)
 
 # --- Configurações ---
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-app.config['JWT_SECRET_KEY'] =  os.environ.get('JWT_SECRET_KEY')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['CACHE_TYPE'] = "SimpleCache"
+app.config["JWT_SECRET_KEY"] =  os.environ.get('JWT_SECRET_KEY')
+app.config["CACHE_TYPE"] = "SimpleCache"
+app.config["CACHE_DEFAULT_TIMEOUT"] = 300
 cache = Cache(app)
 
 # --- Inicializações ---
@@ -25,6 +25,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
+cache = Cache(app)
 
 base_url = "https://pokeapi.co/api/v2"
 
@@ -101,6 +102,21 @@ def create_team():
     if len(pokemon_list) > 6:
         return jsonify({"error": "O time não pode ter mais de 6 Pokémons"}), 400
     
+    valid_pokemon_names = []
+    for name in pokemon_list:
+        if not name:
+            continue
+
+        pokemon_data, status_code = get_pokemon_info(name)
+
+        if status_code == 400:
+            return jsonify({"error": f"Pokémon '{name}' não foi encontrado!"}), 400
+        
+        valid_pokemon_names.append(pokemon_data['name'])
+
+    if not valid_pokemon_names:
+        return jsonify({''})
+
     pokemon_names_str = ",".join(pokemon_list)
 
     new_team = Team(
@@ -131,8 +147,29 @@ def get_my_teams():
         })
     return jsonify(teams_data), 200
 
+@app.route('/api/teams/<int:team_id>', methods=['DELETE'])
+@jwt_required()
+def delete_team(team_id):
+    current_user_id = get_jwt_identity()
+
+    team_to_delete = Team.query.get(team_id)
+
+    if not team_to_delete:
+        return jsonify({"error", "Time não encontrado"}), 404
+    
+    if str(team_to_delete.user_id) != current_user_id:
+        return jsonify({"error": "Não autorizado"}), 401
+
+    try:
+        db.session.delete(team_to_delete)
+        db.session.commit()
+        return jsonify({"message": "Time deletado com sucesso!"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "Erro ao deletar o time", "details": str(e)}), 500
+    
 # --- Rota de Pokémon ---
-@cache.cached(timeout=600)
+@cache.cached(timeout=3600)
 def get_pokemon_info(name):
     url = f"{base_url}/pokemon/{name.lower()}"
     response = requests.get(url)
