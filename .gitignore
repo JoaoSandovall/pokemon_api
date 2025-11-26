@@ -1,17 +1,10 @@
-# Dependências
 node_modules/
 venv/
 env/
-
-# Segurança (Senhas)
 .env
 .env.local
-
-# Python
 __pycache__/
 *.pyc
-
-# Logs e Sistema
 npm-debug.log*
 yarn-debug.log*
 .DS_Store
