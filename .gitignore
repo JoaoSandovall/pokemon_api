@@ -10,3 +10,4 @@ yarn-debug.log*
 .DS_Store
 build/
 dist/
+backend/.env
