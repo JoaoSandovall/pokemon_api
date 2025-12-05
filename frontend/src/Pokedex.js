@@ -1,5 +1,5 @@
-// frontend/src/Pokedex.js
-import React, { useState } from 'react';
+import { useState } from 'react';
+import API_URL from './api';     
 
 function Pokedex() {
   const [pokemonName, setPokemonName] = useState('');
@@ -13,7 +13,7 @@ function Pokedex() {
     setPokemonData(null);
 
     try {
-      const response = await fetch(`http://127.0.0.1:5000/api/pokemon/${pokemonName.toLowerCase()}`);
+      const response = await fetch(`${API_URL}/api/pokemon/${pokemonName.toLowerCase()}`);
       
       const data = await response.json();
 

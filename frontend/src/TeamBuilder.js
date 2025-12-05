@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import API_URL from './api';
 
 function TeamBuilder({ token }) {
     const [teamName, setTeamName] = useState('');
@@ -36,7 +37,7 @@ function TeamBuilder({ token }) {
         };
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/teams', {
+            const response = await fetch(`${API_URL}/api/teams`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
-// frontend/src/MyTeams.js
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import API_URL from './api';
 
 function MyTeams({ token }) {
     const [teams, setTeams] = useState([]);
@@ -9,7 +9,7 @@ function MyTeams({ token }) {
     useEffect(() => {
         const fetchTeams = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:5000/api/teams', {
+                const response = await fetch(`${API_URL}/api/teams`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -32,15 +32,13 @@ function MyTeams({ token }) {
         fetchTeams();
     }, [token]);
 
-    // 2. A função para DELETAR o time (que você adicionou)
     const handleDelete = async (teamId) => {
-        // Pergunta de confirmação
         if (!window.confirm("Tem certeza que quer deletar este time?")) {
             return;
         }
 
         try {
-            const response = await fetch(`http://127.0.0.1:5000/api/teams/${teamId}`, {
+            const response = await fetch(`http://127.0.0.1:5000/api/teams/${teamId}`, { // <--- O ERRO ESTAVA AQUI (${teamid})
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`

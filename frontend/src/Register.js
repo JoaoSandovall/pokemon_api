@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import API_URL from './api';
 
 function Register() {
     const [username, setUsername] = useState('');
@@ -12,7 +13,7 @@ function Register() {
         setSuccess(null);
 
         try {
-            const response = await fetch('http://127.0.0.1:5000/register', {
+            const response = await fetch(`${API_URL}/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
