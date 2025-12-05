@@ -2,6 +2,7 @@ node_modules/
 venv/
 env/
 .env
+backend/.env
 .env.local
 __pycache__/
 *.pyc
@@ -10,4 +11,3 @@ yarn-debug.log*
 .DS_Store
 build/
 dist/
-backend/.env
